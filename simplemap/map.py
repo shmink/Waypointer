@@ -26,6 +26,8 @@ class Map(object):
 		self.zoom = zoom
 		self.config = config_file
 		self.markers = markers
+		#self.message = message
+		# don't forget message=None in arguments. Also need getter and setter method for it.
 
 	def set_center(self, center_point):
 		self._center = '{{ lat:{}, lng:{}}}'.format(*center_point) if center_point else 'null'

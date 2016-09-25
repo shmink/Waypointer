@@ -12,6 +12,9 @@
 
 function initMap() {
 
+	//alert({{ message|safe }});
+	//Above needs to be fixed.
+
 	var bounds = new google.maps.LatLngBounds();
 	var center_lat_lon = {{center|safe}};
 
@@ -22,6 +25,17 @@ function initMap() {
 
 	var markers =  {{ markers|safe }};
 
+	/* Draw a line from point to point, not working currently.
+	var flightPath = new google.maps.Polyline({
+          path: markers,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+	flightPath.setMap(map);
+	*/
 
 	for( i = 0; i < markers.length; i++ ) {
 				var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
