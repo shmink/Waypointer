@@ -94,3 +94,6 @@ example_map.write('sequence' + str(sequence) + '.html')
 # Finally we finish the script by opening the html
 # file with whatever is the defult browser
 webbrowser.open_new('sequence' + str(sequence) + '.html')
+
+# Give some indication that the process has finished and now we just open the html file.
+print 'Opening sequence' + str(sequence) + '.hmtl...'
