@@ -20,7 +20,7 @@ timeinseconds = 0
 # There has only been a certain number of sequences, check length, catch error out of bounds, ?, profit.
 totalsequences = 0
 # Add an optional alert message to the html file
-alert = 'testerino'
+alert = ''
 
 # In an effor to make this system more modular the user passes in a sequence number and table for the waypoints.
 # this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
@@ -44,17 +44,11 @@ if __name__ == '__main__':
 		exit(0)
 
 # Function that gets data from SQL table and formats it in one way or another.
-def getcoordinates(database):
+def get_coordinates(database):
 	try:
 		# Connect to database
 		connect = lite.connect(database)
 		c = connect.cursor()
-		# Get the UUID that relates all the data to a device with the same UUID (experiments have proved it to be the device is installed on, a tablet for example.)
-		c.execute("SELECT Z_UUID FROM Z_METADATA;")
-		# Fetchone seems to grab an item from the table and I guess turn it into a string IF there is one element to it.
-		uuidStr = str(c.fetchone())
-		# Had to cast the above line to a string and format the string, I feel dirty for doing so but deadlines and stuff.
-		uuid = uuidStr.translate(None, "',()u")
 		# check if the sequence is even within the size of the sql table.
 		c.execute('SELECT COUNT(*) FROM ZMISSIONDATA;')
 		# Due to the nature of the way the data is extracted from the SQL table 
@@ -83,6 +77,34 @@ def getcoordinates(database):
 	except IOError, e:
 		print 'File error:', e
 		
+def get_alert(database):
+	try: 
+		# Connect to database
+		connect = lite.connect(database)
+		c = connect.cursor()
+		# Get the UUID that relates all the data to a device with the same UUID (experiments have proved it to be the device is installed on, a tablet for example.)
+		c.execute("SELECT Z_UUID FROM Z_METADATA;")
+		# Fetchone seems to grab an item from the table and I guess turn it into a string IF there is one element to it.
+		uuidStr = str(c.fetchone())
+		# Had to cast the above line to a string and format the string, I feel dirty for doing so but deadlines and stuff.
+		uuid = uuidStr.translate(None, "',()u")
+		# We also need the time of flight from the database.
+		#t = ... line is apparently a more secure way to input a value into an SQL qeurey (querey?)
+		t = (sequence,)
+		c.execute('SELECT ZMSD_TIME_INTERVAL_SINCE_1970 FROM ZMISSIONDATA WHERE ZSEQUENCE_NUMBER = ?;', t)
+		timeinsecondsStr = str(c.fetchone()).translate(None, "(),")
+		#So to do the formatting of certain acharacters I no have to turn it back to an int. This is rapidly becoming unorganised, need to fix.
+		timeinseconds = float(timeinsecondsStr)
+		#from import datetime library you can simply convert seconds elapsed from 1/1/1970 to get a date. Which is what we are doing here.
+		date = datetime.fromtimestamp(timeinseconds)
+		print 'Sequence:', str(sequence), '\nFlown on:', date, '\nUUID:', uuid
+		# Finally we return the string of relevant info that'll eventually be inserted into the alert box.
+		get_alertOutput = "Sequence: " + str(sequence) + ", Flown on: " + str(date) + ", UUID: " + str(uuid)
+		return get_alertOutput
+	except:
+		return 'Could not retrieve either UUID or date from database.'
+
+
 
 ##################################################
 #                                                #
@@ -93,7 +115,9 @@ def getcoordinates(database):
 map_title = 'Sequence ' + str(sequence)
 
 # This gets the coordinates from the above function 
-gps_markers = getcoordinates(db) 
+gps_markers = get_coordinates(db) 
+# This gets the information to display in the alert pop up box
+alert = get_alert(db)
 
 # Here we generate the html page by passing the above 
 # information to the relevant files

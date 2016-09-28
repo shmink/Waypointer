@@ -12,8 +12,11 @@
 
 function initMap() {
 
-	alert('{{ message|safe }}');
-	//Above needs to be fixed.
+	var message = "{{ message|safe }}";
+	//If a message has been added to the alert system be sure to write it.
+	if (message) {
+		alert(message);
+	}
 
 	var bounds = new google.maps.LatLngBounds();
 	var center_lat_lon = {{center|safe}};
