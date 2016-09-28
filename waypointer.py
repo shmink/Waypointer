@@ -19,6 +19,8 @@ sequence = 0
 timeinseconds = 0
 # There has only been a certain number of sequences, check length, catch error out of bounds, ?, profit.
 totalsequences = 0
+# Add an optional alert message to the html file
+alert = ''
 
 # In an effor to make this system more modular the user passes in a sequence number and table for the waypoints.
 # this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
