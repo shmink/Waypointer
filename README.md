@@ -12,7 +12,9 @@ a google maps api and plot all the waypoints from a certain sequence (flighing s
 Once you have a copy of this directory then you'll want to do the following in your terminal.
 
 `cd [your/directory/Waypointer]`
+
 `chmod +x INSTALL.sh`
+
 `sudo ./INSTALL.sh`
 
 If prompted accept you want to download relevant software by tpying `y` and hitting enter/return.
@@ -33,6 +35,8 @@ The result of this should be that you get a .html file by the name of sequence[v
 Waypointer folder. The file will also be automatically opened but it is saved within Waypointer should you want to open
 it at a later date, send it to someone else or whatever your heart desires. You can always generate the original again.
 
+Finally, if relevant, the UUID from the database and total sequences should be displayed in the terminal.
+
 =======
 
 ###Side note
@@ -43,5 +47,7 @@ enough for your needs.
 executed commands.
 * `config.json` has an api key within it. Should you need to change it for whatever reason you replace it by generating your own
 on [Googles developer site.](https://developers.google.com/maps/documentation/javascript/get-api-key)
+* Sometimes in the terminal it seems to 'hang' when the .html file has been opened. Feel free to `Ctrl+C` in the terminal, it's just
+an idiosyncrasy of the python module 'webbrowser' as far as I can tell.
 
 =======
