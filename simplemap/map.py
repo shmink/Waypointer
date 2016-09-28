@@ -41,7 +41,7 @@ class Map(object):
 		else:
 			#Don't allow zoom to be null if customer center is given 
 			self._zoom = ZOOM_DEFAULT if self.center else 'null'
-	# Message setter and getter methods I added. Similar concept to zoom, an optional for the user.
+	# Message setter and getter methods I added. Similar concept to zoom, optional for the user.
 	def set_message(self, message):
 		self._message = message
 
@@ -81,6 +81,7 @@ class Map(object):
 	markers = property(get_markers, set_markers)
 	center = property(get_center, set_center)
 	zoom = property(get_zoom, set_zoom)
+	# Declare the names of the setter and getters
 	message = property(get_message, set_message)
 
 	def write(self, output_path):

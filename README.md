@@ -17,6 +17,8 @@ Once you have a copy of this directory then you'll want to do the following in y
 
 `sudo ./INSTALL.sh`
 
+You'll then need to input your password for your system.
+
 If prompted accept you want to download relevant software by tpying `y` and hitting enter/return.
 
 =======
@@ -35,7 +37,8 @@ The result of this should be that you get a .html file by the name of sequence[v
 Waypointer folder. The file will also be automatically opened but it is saved within Waypointer should you want to open
 it at a later date, send it to someone else or whatever your heart desires. You can always generate the original again.
 
-Finally, if relevant, the UUID from the database and total sequences should be displayed in the terminal.
+Finally, if relevant, the UUID from the database, total sequences and date of flight for relevant sequence should 
+be displayed in an alert box when the web page opens.
 
 =======
 
