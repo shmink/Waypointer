@@ -20,7 +20,7 @@ timeinseconds = 0
 # There has only been a certain number of sequences, check length, catch error out of bounds, ?, profit.
 totalsequences = 0
 # Add an optional alert message to the html file
-alert = ''
+alert = 'testerino'
 
 # In an effor to make this system more modular the user passes in a sequence number and table for the waypoints.
 # this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
@@ -97,7 +97,7 @@ gps_markers = getcoordinates(db)
 
 # Here we generate the html page by passing the above 
 # information to the relevant files
-example_map = simplemap.Map(map_title, markers=gps_markers)
+example_map = simplemap.Map(map_title, markers=gps_markers, message=alert)
 # We also need a name for the html file that's being outputted
 example_map.write('sequence' + str(sequence) + '.html')
 

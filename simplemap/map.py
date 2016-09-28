@@ -18,7 +18,7 @@ TEMPLATES_DIR = FileSystemLoader('simplemap/templates')
 ZOOM_DEFAULT = 11
 
 class Map(object):
-	def __init__(self, title, center=None, zoom=11, markers=None, html_template='basic.html', config_file='config.json'):
+	def __init__(self, title, center=None, zoom=11, markers=None, message=None, html_template='basic.html', config_file='config.json'):
 		self._env = Environment(loader=TEMPLATES_DIR, trim_blocks=True, undefined=SilentUndefined)
 		self.title = title
 		self.template = self._env.get_template(html_template)
@@ -26,8 +26,8 @@ class Map(object):
 		self.zoom = zoom
 		self.config = config_file
 		self.markers = markers
-		#self.message = message
-		# don't forget message=None in arguments. Also need getter and setter method for it.
+		# message added in.
+		self.message = message
 
 	def set_center(self, center_point):
 		self._center = '{{ lat:{}, lng:{}}}'.format(*center_point) if center_point else 'null'
@@ -41,6 +41,12 @@ class Map(object):
 		else:
 			#Don't allow zoom to be null if customer center is given 
 			self._zoom = ZOOM_DEFAULT if self.center else 'null'
+	# Message setter and getter methods I added. Similar concept to zoom, an optional for the user.
+	def set_message(self, message):
+		self._message = message
+
+	def get_message(self):
+		return self._message
 
 	def get_zoom(self):
 		return self._zoom
@@ -75,11 +81,12 @@ class Map(object):
 	markers = property(get_markers, set_markers)
 	center = property(get_center, set_center)
 	zoom = property(get_zoom, set_zoom)
+	message = property(get_message, set_message)
 
 	def write(self, output_path):
 		try:
 			html = self.template.render(map_title = self.title, center=self.center,
-				zoom=self.zoom, markers=self.markers, api_key=self.config['api_key'])
+				zoom=self.zoom, markers=self.markers, message=self.message, api_key=self.config['api_key'])
 			with open(output_path, "w") as out_file:
 				out_file.write(html)
 			return 'file://' + os.path.join(os.path.abspath(os.curdir), output_path)
