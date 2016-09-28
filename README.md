@@ -5,6 +5,7 @@
 This software is a python script that should (with the right SQL file) extract longitude
 and latitude from the said table. Then after some sorting of the relevant data feed it into
 a google maps api and plot all the waypoints from a certain sequence (flighing session).
+
 =======
 
 ###Installation
@@ -15,6 +16,7 @@ Once you have a copy of this directory then you'll want to do the following in y
 `sudo ./INSTALL.sh`
 
 If prompted accept you want to download relevant software by tpying `y` and hitting enter/return.
+
 =======
 
 ###Usage
@@ -41,6 +43,5 @@ enough for your needs.
 executed commands.
 * `config.json` has an api key within it. Should you need to change it for whatever reason you replace it by generating your own
 on [Googles developer site.](https://developers.google.com/maps/documentation/javascript/get-api-key)
-
 
 =======
