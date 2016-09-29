@@ -60,13 +60,16 @@ def get_coordinates(database):
 		if (int(sequence) < totalsequences):
 			# sqlite3 library documentation says it's more 'secure' to insert values into querys like so.
 			t = (sequence,)
-			c.execute('SELECT ZWP_LAT, ZWP_LON FROM ZWAYPOINT WHERE ZMSD_SEQUENCE_NUMBER = ?;', t)
+			c.execute('SELECT ZWP_WP_NR, ZWP_LAT, ZWP_LON FROM ZWAYPOINT WHERE ZMSD_SEQUENCE_NUMBER = ?;', t)
 			# Get the results of the query.
 			coordinates = c.fetchall()
 			# Again another issue, this time with data types. The sql query spits out a list of tuples.
 			# the google maps api wants a list of lists....
 			for x in range(0, len(coordinates)):
 				coordinates[x] = list(coordinates[x])
+
+			for x in range(0, len(coordinates)):
+				coordinates[x][0] = str(coordinates[x][0])
 			# Finally return the results to wherever this function was called from
 			return coordinates
 		else:
@@ -130,4 +133,4 @@ example_map.write('sequence' + str(sequence) + '.html')
 webbrowser.open_new('sequence' + str(sequence) + '.html')
 
 # Give some indication that the process has finished and now we just open the html file.
-print 'Opening sequence' + str(sequence) + '.hmtl...'
+print '\nOpening sequence' + str(sequence) + '.hmtl...'

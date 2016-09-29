@@ -29,7 +29,7 @@ function initMap() {
 	var markers =  {{ markers|safe }};
 
 	//Doing this on the 'lines' branch
-	/* Draw a line from point to point, not working currently.
+	//Draw a line from point to point, not working currently.
 	var flightPath = new google.maps.Polyline({
           path: markers,
           geodesic: true,
@@ -39,7 +39,7 @@ function initMap() {
         });
 
 	flightPath.setMap(map);
-	*/
+	
 
 	for( i = 0; i < markers.length; i++ ) {
 				var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
