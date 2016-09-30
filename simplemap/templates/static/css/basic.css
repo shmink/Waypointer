@@ -8,3 +8,9 @@ html, body {
 	height: 100%;
 	width: 80%;
 }
+
+#sidebar {
+	float:right;
+	margin-right: 1%;
+	overflow: auto;
+}

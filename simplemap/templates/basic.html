@@ -7,16 +7,23 @@
 		<link rel="stylesheet" href="simplemap/templates/static/css/basic.css">
 	</head>
 	<body>
+		<div id="sidebar">
+			<h2>Waypointer</h2>
+			<!--<p>Sequence:</p>
+			<p>Date:</p>
+			<p>UUID:</p>-->
+			<p>{{ message|safe }}</p>
+		</div>
 		<div id="map"></div>
 		<script>
 
 function initMap() {
 
-	var message = "{{ message|safe }}";
+	/*var message = "{{ message|safe }}";
 	//If a message has been added to the alert system be sure to write it.
 	if (message) {
 		alert(message);
-	}
+	}*/
 
 	var bounds = new google.maps.LatLngBounds();
 	var center_lat_lon = {{center|safe}};
@@ -27,11 +34,13 @@ function initMap() {
 	});
 
 	var markers =  {{ markers|safe }};
+	//points need to be {lon:5.4..., lng:6.342...} 
+	var points = {{ points|safe }}
 
 	//Doing this on the 'lines' branch
 	//Draw a line from point to point, not working currently.
 	var flightPath = new google.maps.Polyline({
-          path: markers,
+          path: points,
           geodesic: true,
           strokeColor: '#FF0000',
           strokeOpacity: 1.0,
@@ -56,8 +65,6 @@ function initMap() {
 
 		{{ 'map.fitBounds(bounds);' if center == 'null' else '' }}
 }
-
-
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&signed_in=true&callback=initMap"
 		async defer></script>

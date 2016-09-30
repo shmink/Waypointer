@@ -22,6 +22,7 @@ totalsequences = 0
 # Add an optional alert message to the html file
 alert = ''
 
+
 # In an effor to make this system more modular the user passes in a sequence number and table for the waypoints.
 # this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
 if __name__ == '__main__':
@@ -54,21 +55,18 @@ def get_coordinates(database):
 		# Due to the nature of the way the data is extracted from the SQL table 
 		# this dirty data manipulation has to happen. It's just not elegant :(
 		totalsequences = int(str(c.fetchone()).translate(None, "(),"))
-		# Print out some info extra information. Hoping to make this better for user in future.
-		print '\nFrom the table with the UUID:', uuid, '\nthere are a total of', totalsequences, 'sequences.\n'
 		# Check the sequence number from user against total amount of sequences.
-		if (int(sequence) < totalsequences):
+		if (int(sequence) < (totalsequences + 1)):
 			# sqlite3 library documentation says it's more 'secure' to insert values into querys like so.
 			t = (sequence,)
-			c.execute('SELECT ZWP_WP_NR, ZWP_LAT, ZWP_LON FROM ZWAYPOINT WHERE ZMSD_SEQUENCE_NUMBER = ?;', t)
+			c.execute('SELECT ZWP_WP_NR, ZWP_LAT, ZWP_LON FROM ZWAYPOINT WHERE ZMSD_SEQUENCE_NUMBER = ? ORDER BY ZWP_WP_NR ASC;', t)
 			# Get the results of the query.
 			coordinates = c.fetchall()
 			# Again another issue, this time with data types. The sql query spits out a list of tuples.
 			# the google maps api wants a list of lists....
+			# We also want the waypoint number in there so you can hover over waypoint in the html file
 			for x in range(0, len(coordinates)):
 				coordinates[x] = list(coordinates[x])
-
-			for x in range(0, len(coordinates)):
 				coordinates[x][0] = str(coordinates[x][0])
 			# Finally return the results to wherever this function was called from
 			return coordinates
@@ -100,12 +98,23 @@ def get_alert(database):
 		timeinseconds = float(timeinsecondsStr)
 		#from import datetime library you can simply convert seconds elapsed from 1/1/1970 to get a date. Which is what we are doing here.
 		date = datetime.fromtimestamp(timeinseconds)
-		print 'Sequence:', str(sequence), '\nFlown on:', date, '\nUUID:', uuid
 		# Finally we return the string of relevant info that'll eventually be inserted into the alert box.
-		get_alertOutput = "Sequence: " + str(sequence) + ", Flown on: " + str(date) + ", UUID: " + str(uuid)
+		get_alertOutput = "Sequence: " + str(sequence) + "<br>Flown on: " + str(date) + "<br>UUID: " + str(uuid)
 		return get_alertOutput
 	except:
 		return 'Could not retrieve either UUID or date from database.'
+
+
+def make_points(coords):
+	if(coords):
+		for x in range(0, len(coords)):
+			coords[x].pop(0)
+			#coords[x] = str(coords[x])
+			coords[x] = str(coords[x]).replace("[", "{lat: ").replace(",", ", lng:").replace("]", "}")
+			#coords[x].replace(",", ", lng:")
+			#coords[x].replace("]", "}")
+			print '\n', coords[x]
+	return coords
 
 
 
@@ -122,9 +131,19 @@ gps_markers = get_coordinates(db)
 # This gets the information to display in the alert pop up box
 alert = get_alert(db)
 
+
+#Test
+plots = make_points(get_coordinates(db))
+
+print plots
+
+#print plots[0]
+#print type(plots[0])
+#print str(plots[0]).replace("[", "{lat: ").replace(",", ", lng:").replace("]", "}")
+
 # Here we generate the html page by passing the above 
 # information to the relevant files
-example_map = simplemap.Map(map_title, markers=gps_markers, message=alert)
+example_map = simplemap.Map(map_title, markers=gps_markers, message=alert, points=plots)
 # We also need a name for the html file that's being outputted
 example_map.write('sequence' + str(sequence) + '.html')
 

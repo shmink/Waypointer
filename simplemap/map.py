@@ -18,7 +18,7 @@ TEMPLATES_DIR = FileSystemLoader('simplemap/templates')
 ZOOM_DEFAULT = 11
 
 class Map(object):
-	def __init__(self, title, center=None, zoom=11, markers=None, message=None, html_template='basic.html', config_file='config.json'):
+	def __init__(self, title, center=None, zoom=11, markers=None, message=None, points=None, html_template='basic.html', config_file='config.json'):
 		self._env = Environment(loader=TEMPLATES_DIR, trim_blocks=True, undefined=SilentUndefined)
 		self.title = title
 		self.template = self._env.get_template(html_template)
@@ -28,6 +28,8 @@ class Map(object):
 		self.markers = markers
 		# message added in.
 		self.message = message
+		# points for lines added in
+		self.points = points
 
 	def set_center(self, center_point):
 		self._center = '{{ lat:{}, lng:{}}}'.format(*center_point) if center_point else 'null'
@@ -47,6 +49,13 @@ class Map(object):
 
 	def get_message(self):
 		return self._message
+
+	# Points setter and getter
+	def set_points(self, points):
+		self._points = points
+
+	def get_points(self):
+		return self._points
 
 	def get_zoom(self):
 		return self._zoom
@@ -83,11 +92,13 @@ class Map(object):
 	zoom = property(get_zoom, set_zoom)
 	# Declare the names of the setter and getters
 	message = property(get_message, set_message)
+	# Declare the names of the setter and getters
+	points = property(get_points, set_points)
 
 	def write(self, output_path):
 		try:
 			html = self.template.render(map_title = self.title, center=self.center,
-				zoom=self.zoom, markers=self.markers, message=self.message, api_key=self.config['api_key'])
+				zoom=self.zoom, markers=self.markers, message=self.message, points=self.points, api_key=self.config['api_key'])
 			with open(output_path, "w") as out_file:
 				out_file.write(html)
 			return 'file://' + os.path.join(os.path.abspath(os.curdir), output_path)
