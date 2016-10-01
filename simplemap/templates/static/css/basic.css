@@ -9,7 +9,7 @@ html, body {
 	width: 80%;
 }
 /* sidebar on the right of the screen, 
-   because it's not always relavant. */
+   because it's not always relavant.  */
 #sidebar {
 	float:right;
 	margin-right: 1%;
