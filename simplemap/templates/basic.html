@@ -4,26 +4,18 @@
 		<title>{{map_title}}</title>
 		<meta name="viewport" content="initial-scale=1.0">
 		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 		<link rel="stylesheet" href="simplemap/templates/static/css/basic.css">
 	</head>
 	<body>
 		<div id="sidebar">
 			<h2>Waypointer</h2>
-			<!--<p>Sequence:</p>
-			<p>Date:</p>
-			<p>UUID:</p>-->
 			<p>{{ message|safe }}</p>
 		</div>
 		<div id="map"></div>
 		<script>
 
 function initMap() {
-
-	/*var message = "{{ message|safe }}";
-	//If a message has been added to the alert system be sure to write it.
-	if (message) {
-		alert(message);
-	}*/
 
 	var bounds = new google.maps.LatLngBounds();
 	var center_lat_lon = {{center|safe}};
@@ -32,13 +24,12 @@ function initMap() {
 		zoom: {{ zoom|safe }},
 		center:  center_lat_lon
 	});
-
+	// markers is the actual pins you'll see on gmaps.
 	var markers =  {{ markers|safe }};
-	//points need to be {lon:5.4..., lng:6.342...} 
-	var points = {{ points|safe }}
+	//points are close to markers but formatted differently as the flightPath var needs it like so.
+	var points = {{ points|safe }};
 
-	//Doing this on the 'lines' branch
-	//Draw a line from point to point, not working currently.
+	// flightPath takes the points and draws lines between them all.
 	var flightPath = new google.maps.Polyline({
           path: points,
           geodesic: true,

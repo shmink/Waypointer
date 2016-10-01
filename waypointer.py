@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# @author Tom Nicklin
+### @author Tom Nicklin
+# This has been specifically set up for the GroundStation application data tables.
+# more file types and diffferent SQL querys will change based on new information.
 
 from datetime import datetime
 import simplemap
@@ -23,7 +25,7 @@ totalsequences = 0
 alert = ''
 
 
-# In an effor to make this system more modular the user passes in a sequence number and table for the waypoints.
+# In an effort to make this system more modular the user passes in a sequence number and table for the waypoints.
 # this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
 if __name__ == '__main__':
 	if len(sys.argv) == 3:
@@ -99,22 +101,23 @@ def get_alert(database):
 		#from import datetime library you can simply convert seconds elapsed from 1/1/1970 to get a date. Which is what we are doing here.
 		date = datetime.fromtimestamp(timeinseconds)
 		# Finally we return the string of relevant info that'll eventually be inserted into the alert box.
-		get_alertOutput = "Sequence: " + str(sequence) + "<br>Flown on: " + str(date) + "<br>UUID: " + str(uuid)
+		get_alertOutput = "Sequence: " + str(sequence) + "<br><br>Flown on: " + str(date) + "<br><br>UUID: " + str(uuid)
 		return get_alertOutput
 	except:
 		return 'Could not retrieve either UUID or date from database.'
 
-
+# Here we change the formatting of the waypoints so gmaps api can use them to plot lines
 def make_points(coords):
 	if(coords):
+		# Firstly we don't need the way point number in this as we already have our waypoints in order.
 		for x in range(0, len(coords)):
 			coords[x].pop(0)
-			#coords[x] = str(coords[x])
-			coords[x] = str(coords[x]).replace("[", "{lat: ").replace(",", ", lng:").replace("]", "}")
-			#coords[x].replace(",", ", lng:")
-			#coords[x].replace("]", "}")
-			print '\n', coords[x]
-	return coords
+		# List comprehensions are fun. Basically telling it the format I want and then it has its 
+		# own little for loop and then changes all elements. It's more obvious when you look at
+		# var points in a generated html file.
+		new_list = [{'lat': d[0], 'lng': d[1]} for d in coords]
+		# Return the new list after the list comprehension.
+	return new_list
 
 
 
@@ -130,16 +133,8 @@ map_title = 'Sequence ' + str(sequence)
 gps_markers = get_coordinates(db) 
 # This gets the information to display in the alert pop up box
 alert = get_alert(db)
-
-
-#Test
-plots = make_points(get_coordinates(db))
-
-print plots
-
-#print plots[0]
-#print type(plots[0])
-#print str(plots[0]).replace("[", "{lat: ").replace(",", ", lng:").replace("]", "}")
+# This will take the points and make sure they can be used to make lines on the map
+plots = make_points(gps_markers)
 
 # Here we generate the html page by passing the above 
 # information to the relevant files

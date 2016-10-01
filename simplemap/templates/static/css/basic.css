@@ -3,14 +3,16 @@ html, body {
  	margin: 0; 
  	padding: 0; 
 }
-
+/* Width at 80% for sidebar */
 #map {
 	height: 100%;
 	width: 80%;
 }
-
+/* sidebar on the right of the screen, 
+   because it's not always relavant. */
 #sidebar {
 	float:right;
 	margin-right: 1%;
 	overflow: auto;
+	font-family: 'Ubuntu', sans-serif;
 }
