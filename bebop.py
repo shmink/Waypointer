@@ -5,15 +5,11 @@ csvfile = 'test4.csv'
 
 def get_product_coordinates(file):
 	with open(file, 'rb') as csvfile:
-		#reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-		# print it all.
-		#for row in reader:
-		#	print ', '.join(row)
 
 		# printing specifics
 		readmorelikecashmore = csv.DictReader(csvfile)
-		#for row in readmorelikecashmore:
-		#newList = row['product_gps_longitude']
+
+
 		coordinates = [ [ 'altitude: ' + row['altitude'] + 'cm, flying state: ' + row['flying_state'], float(row['product_gps_longitude']), float(row['product_gps_latitude']) ] for row in readmorelikecashmore]
 		
 		return coordinates
@@ -49,10 +45,12 @@ map_title = csvfile
 
 # need to make a fake coordinates right now because 
 # the drone logs doesn't have real ones.
+# TODO: uncomment the real line below this test one.
 gps_markers = [ ['0', 23, 7], ['1', 24, 6], ['2', 25, 8] ]
 #gps_markers = get_product_coordinates(csvfile)
-#print gps_markers
-plots = make_points(gps_markers)
+
+new_gps = [sublist[:] for sublist in gps_markers]
+plots = make_points(new_gps)
 
 
 # Here we generate the html page by passing the above 
