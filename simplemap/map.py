@@ -16,6 +16,7 @@ import traceback
 
 TEMPLATES_DIR = FileSystemLoader('simplemap/templates')
 ZOOM_DEFAULT = 11
+LINES_DEFAULT = []
 
 class Map(object):
 	def __init__(self, title, center=None, zoom=11, markers=None, message=None, points=None, html_template='basic.html', config_file='config.json'):
@@ -52,7 +53,10 @@ class Map(object):
 
 	# Points setter and getter
 	def set_points(self, points):
-		self._points = points
+		if points:
+			self._points = points
+		else:
+			self._points = LINES_DEFAULT
 
 	def get_points(self):
 		return self._points

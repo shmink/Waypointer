@@ -138,16 +138,16 @@ gps_markers = get_coordinates(db)
 # TODO: the hover text isn't going through ok yet it's correct to this point.
 print 'gps_markers 0 ->', gps_markers
 
-gpslines = gps_markers
+gpslines = [sublist[:] for sublist in gps_markers]
 # This gets the information to display in the alert pop up box
 alert = get_alert(db)
 # This will take the points and make sure they can be used to make lines on the map
-#plots = make_points(gpslines)
+plots = make_points(gpslines)
 
 print 'gps_markers 1 ->', gps_markers
 # Here we generate the html page by passing the above 
 # information to the relevant files
-example_map = simplemap.Map(map_title, markers=gps_markers, message=alert)
+example_map = simplemap.Map(map_title, markers=gps_markers, message=alert, points=plots)
 # We also need a name for the html file that's being outputted
 example_map.write('sequence' + str(sequence) + '.html')
 
