@@ -111,13 +111,17 @@ def make_points(coords):
 	if(coords):
 		# Firstly we don't need the way point number in this as we already have our waypoints in order.
 		for x in range(0, len(coords)):
-			coords[x].pop(0)
+			if(len(coords[x]) > 2):
+				coords[x].pop(0)
+		
 		# List comprehensions are fun. Basically telling it the format I want and then it has its 
 		# own little for loop and then changes all elements. It's more obvious when you look at
 		# var points in a generated html file.
 		new_list = [{'lat': d[0], 'lng': d[1]} for d in coords]
 		# Return the new list after the list comprehension.
-	return new_list
+		return new_list
+	else:
+		print 'parameter was dodgy.'
 
 
 
@@ -131,14 +135,19 @@ map_title = 'Sequence ' + str(sequence)
 
 # This gets the coordinates from the above function 
 gps_markers = get_coordinates(db) 
+# TODO: the hover text isn't going through ok yet it's correct to this point.
+print 'gps_markers 0 ->', gps_markers
+
+gpslines = gps_markers
 # This gets the information to display in the alert pop up box
 alert = get_alert(db)
 # This will take the points and make sure they can be used to make lines on the map
-plots = make_points(gps_markers)
+#plots = make_points(gpslines)
 
+print 'gps_markers 1 ->', gps_markers
 # Here we generate the html page by passing the above 
 # information to the relevant files
-example_map = simplemap.Map(map_title, markers=gps_markers, message=alert, points=plots)
+example_map = simplemap.Map(map_title, markers=gps_markers, message=alert)
 # We also need a name for the html file that's being outputted
 example_map.write('sequence' + str(sequence) + '.html')
 
