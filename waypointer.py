@@ -79,6 +79,7 @@ def get_coordinates(database):
 	# If the file can't be read/corrupted/whatever else we should hopefully be able to debug with the error message.
 	except IOError, e:
 		print 'File error:', e
+		exit(0)
 		
 def get_alert(database):
 	try: 

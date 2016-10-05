@@ -1,3 +1,12 @@
+#!/usr/bin/python
+"""
+Take the csv file created and then take legitimate waypoints and plot 
+them on google maps using their api.
+
+@autoher: Tom Nicklin
+"""
+from datetime import datetime
+import json
 import csv
 import simplemap
 import webbrowser
@@ -37,6 +46,37 @@ def make_points(coords):
 		# Return the new list after the list comprehension.
 	return new_list
 
+def get_header_info(file):
+	try:
+		contents = open(file, 'rb').read()
+
+		# Extract the JSON header.
+		null_terminator_index = contents.index('\x00')
+		header_json = contents[:null_terminator_index]
+		packets = contents[null_terminator_index+1:]
+
+		# Parse the header.
+		header = json.loads(header_json)
+		date = header['date']
+		dateformatted = datetime.strptime(date[:17],"%Y-%m-%dT%H%M%S")
+		product_id = header['product_id']
+		serial_number = header['serial_number']
+		hardware_version = header['hardware_version']
+		software_version = header['software_version']
+		uuid = header['uuid']
+		controller_model = header['controller_model']
+		controller_application = header['controller_application']
+		product_style = header['product_style']
+		product_accessory = header['product_accessory']
+
+		# A big old message for the output.
+		output = "Date as saved: " + str(date) + "<br><br>Date formatted: " + str(dateformatted) + "<br><br>Product ID: " + str(product_id) + "<br><br>Serial Number: " + str(serial_number) + "<br><br>Hardware Version: " + str(hardware_version) + "<br><br>Software Version: " + str(software_version) + "<br><br>UUID: " + str(uuid) + "<br><br>Controller Model: " + str(controller_model) + "<br><br>Controller Application: " + str(controller_application) + "<br><br>Product Style: " + str(product_style) + "<br><br>Product Accessory: " + str(product_accessory)
+		return output
+
+	except IOError, e:
+		print 'File error:', e
+		exit(0)
+
 	
 
 
@@ -60,10 +100,12 @@ new_gps = [sublist[:] for sublist in gps_markers]
 # Use said copy to do something different without effecting the original.
 plots = make_points(new_gps)
 
+# Get header info in the form of a string that we can then send as a message to the webpage
+alert = get_header_info('test3.pud')
 
 # Here we generate the html page by passing the above 
 # information to the relevant files
-example_map = simplemap.Map(map_title, markers=gps_markers, points=plots)
+example_map = simplemap.Map(map_title, markers=gps_markers, points=plots, message=alert)
 # We also need a name for the html file that's being outputted
 example_map.write(csvfile + '.html')
 
