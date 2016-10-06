@@ -69,7 +69,7 @@ def get_coordinates(database):
 			# We also want the waypoint number in there so you can hover over waypoint in the html file
 			for x in range(0, len(coordinates)):
 				coordinates[x] = list(coordinates[x])
-				coordinates[x][0] = str(coordinates[x][0])
+				coordinates[x][0] = 'Waypoint: ' + str(coordinates[x][0])
 			# Finally return the results to wherever this function was called from
 			return coordinates
 		else:
@@ -136,16 +136,12 @@ map_title = 'Sequence ' + str(sequence)
 
 # This gets the coordinates from the above function 
 gps_markers = get_coordinates(db) 
-# TODO: the hover text isn't going through ok yet it's correct to this point.
-print 'gps_markers 0 ->', gps_markers
 
 gpslines = [sublist[:] for sublist in gps_markers]
 # This gets the information to display in the alert pop up box
 alert = get_alert(db)
 # This will take the points and make sure they can be used to make lines on the map
 plots = make_points(gpslines)
-
-print 'gps_markers 1 ->', gps_markers
 # Here we generate the html page by passing the above 
 # information to the relevant files
 example_map = simplemap.Map(map_title, markers=gps_markers, message=alert, points=plots)
