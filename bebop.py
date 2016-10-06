@@ -5,13 +5,38 @@ them on google maps using their api.
 
 @autoher: Tom Nicklin
 """
+# Import the pud to csv class and refer to is as pud for ease.
+import pudconverter
 from datetime import datetime
 import json
 import csv
 import simplemap
 import webbrowser
+import sys
+import os
 
-csvfile = 'test3.pud.csv'
+pudfile = ''
+
+# In an effort to make this system more modular the user passes in a sequence number and table for the waypoints.
+# this is that argument system. It still doesn't seem right to me but I've tested it enough that it works.
+if __name__ == '__main__':
+	if len(sys.argv) == 2:
+		if os.path.isfile(sys.argv[1]):
+			pudfile = sys.argv[1]
+		else:
+			print 'File could not be found.'
+			exit(0)
+	else:
+		print 'The format required is `python bebop.py <pud file>'
+		exit(0)
+
+def send_to_converter(myFile):
+	os.system('python pudconverter/pud_to_csv_kml.py ' + pudfile)
+	print 'Converting your .pud file...'
+	csvfile = pudfile + '.csv'
+	print csvfile
+
+send_to_converter(pudfile)
 
 def get_coordinates(file):
 	with open(file, 'rb') as csvfile:
@@ -27,7 +52,7 @@ def get_coordinates(file):
 		sanitised = []
 		for x in range(0, len(coordinates)):
 			# If legitimate gps locations then the following if should be true.
-			if((coordinates[x][1] or coordinates[x][2]) < 179):
+			if((coordinates[x][1] or coordinates[x][2]) < 180):
 				sanitised.append(coordinates[x])
 		# Finally we return the result.
 		return sanitised
@@ -87,10 +112,10 @@ def get_header_info(file):
 #                                                #
 ##################################################
 # Map title is the text in the tab on whatever browser
-map_title = csvfile
+map_title = pudfile
 
 # This gets the coordinates from the above function 
-gps_markers = get_coordinates(csvfile)
+gps_markers = get_coordinates(pudfile + '.csv')
 
 # We need a clone of gps_markers because python assigns by reference. 
 # In short it means if you change the copy you'll ALSO change the original. Not good. 
@@ -101,17 +126,17 @@ new_gps = [sublist[:] for sublist in gps_markers]
 plots = make_points(new_gps)
 
 # Get header info in the form of a string that we can then send as a message to the webpage
-alert = get_header_info('test3.pud')
+alert = get_header_info(pudfile)
 
 # Here we generate the html page by passing the above 
 # information to the relevant files
 example_map = simplemap.Map(map_title, markers=gps_markers, points=plots, message=alert)
 # We also need a name for the html file that's being outputted
-example_map.write(csvfile + '.html')
+example_map.write(pudfile + '.html')
 
 # Finally we finish the script by opening the html
 # file with whatever is the defult browser
-webbrowser.open_new(csvfile + '.html')
+webbrowser.open_new(pudfile + '.html')
 
 # Give some indication that the process has finished and now we just open the html file.
-print '\nWriting ' + csvfile + '.hmtl...'
+print '\nWriting ' + pudfile + '.hmtl...'
