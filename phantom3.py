@@ -25,7 +25,9 @@ def get_coordinates(file):
 		
 		sanitised = []
 		for x in range(0, len(coordinates)):
-			# If legitimate gps locations then the following if should be true.
+			# When phantom 3 powers up and doesn't have a gps lock it leaves the cells empty in csv file.
+			# google maps assumes this to 0,0 so we have incorrect waypoints added to map.
+			# The if statments makes it so we check if the cell is empty or not, if not add it to the list of points.
 			if((coordinates[x][0] or coordinates[x][1]) != ''):
 				sanitised.append(coordinates[x])
 		# Finally we return the result.
@@ -62,8 +64,13 @@ gps_markers = get_coordinates(csvfile)
 # On top of that gps_markers is a 2D list so it requires a bit more thought.
 new_gps = [sublist[:] for sublist in gps_markers]
 
-print 'gps_markers has', len(gps_markers), 'entrys.'
-print 'last element of gps_markers = ', gps_markers[-1:]
+# Due to there being so many waypoints generated from the dat file it's easier to only keep
+# the first and last waypoint and then identify which is which with hover text.
+# The rest of the flight will just be a line of where the drone went.
+gps_markers[0].insert(0, 'Start')
+gps_markers[-1].insert(0, 'End')
+gps_markers = [ gps_markers[0], gps_markers[-1] ]
+
 
 # Use said copy to do something different without effecting the original.
 plots = make_points(new_gps)
