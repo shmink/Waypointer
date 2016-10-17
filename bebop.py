@@ -45,7 +45,7 @@ def get_coordinates(file):
 		readmorelikecashmore = csv.DictReader(csvfile)
 
 
-		coordinates = [ [ 'altitude: ' + row['altitude'] + 'cm, flying state: ' + row['flying_state'], float(row['product_gps_latitude']), float(row['product_gps_longitude']) ] for row in readmorelikecashmore]
+		coordinates = [ [ 'time: ' + row['time'] + ' altitude: ' + row['altitude'] + 'cm, flying state: ' + row['flying_state'], float(row['product_gps_latitude']), float(row['product_gps_longitude']) ] for row in readmorelikecashmore]
 		
 		# When we get the gps coordinates, some of them are 500. That doesn't exist on maps, as a result gmaps just doesn't function.
 		# Here we santise (ignore) those results.
@@ -69,7 +69,11 @@ def make_points(coords):
 		# var points in a generated html file.
 		new_list = [{'lat': d[0], 'lng': d[1]} for d in coords]
 		# Return the new list after the list comprehension.
-	return new_list
+	if len(new_list) == 0:
+		print '\nNo legitimate co-ordinates found in file.'
+		exit(0)
+	else:
+		return new_list
 
 def get_header_info(file):
 	try:
