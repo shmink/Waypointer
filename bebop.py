@@ -69,7 +69,7 @@ def make_points(coords):
 		# var points in a generated html file.
 		new_list = [{'lat': d[0], 'lng': d[1]} for d in coords]
 		# Return the new list after the list comprehension.
-	if len(new_list) == 0:
+	if len(coords) == 0:
 		print '\nNo legitimate co-ordinates found in file.'
 		exit(0)
 	else:
