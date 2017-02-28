@@ -3,7 +3,7 @@
 Take the csv file created and then take legitimate waypoints and plot 
 them on google maps using their api.
 
-@autoher: Tom Nicklin
+@auther: Tom Nicklin
 """
 import csv
 import simplemap
