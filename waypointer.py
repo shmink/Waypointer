@@ -1,8 +1,10 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-### @author Tom Nicklin
-# This has been specifically set up for the GroundStation application data tables.
-# more file types and diffferent SQL querys will change based on new information.
+"""
+This has been specifically set up for the GroundStation application data tables.
+more file types and diffferent SQL querys will change based on new information.
+
+@author Tom Nicklin
+"""
 
 from datetime import datetime
 import simplemap
