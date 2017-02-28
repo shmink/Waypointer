@@ -1,9 +1,9 @@
 #!/usr/bin/python
 """
-Take the csv file created and then take legitimate waypoints and plot 
-them on google maps using their api.
+Take the pud file send it to 'pudconverter' from that output
+then take legitimate waypoints and plot them on google maps using their api.
 
-@autoher: Tom Nicklin
+@auther: Tom Nicklin
 """
 # Import the pud to csv class and refer to is as pud for ease.
 import pudconverter
