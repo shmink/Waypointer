@@ -7,6 +7,11 @@ and latitude from the said file. Then after some sorting of the relevant data fe
 a google maps api and plot all the waypoints from a certain sequence (flighing session) as well as 
 relevant meta data.
 
+####Supported Drones
+* DJI Phantom 2 (Ground station app sqlite database file)
+* DJI Phantom 3 (CSV file from DatCon output)
+* Parrot Bebop 2 (PUD file from either mobile device used for flight or drone itself)
+
 =======
 
 ###Installation
@@ -55,6 +60,6 @@ executed commands.
 * `config.json` has an api key within it. Should you need to change it for whatever reason you replace it by generating your own
 on [Googles developer site.](https://developers.google.com/maps/documentation/javascript/get-api-key)
 * Sometimes in the terminal it seems to 'hang' when the .html file has been opened. Feel free to `Ctrl+C` in the terminal, it's just
-an idiosyncrasy of the python module 'webbrowser' as far as I can tell.
+an idiosyncrasy of the python module `webbrowser` as far as I can tell.
 
 =======
