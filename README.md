@@ -1,20 +1,20 @@
 # Waypointer
-*Waypointer, a simple way to plot multiple locations.*
+*Waypointer, a simple way to plot multiple locations from drone flight logs.* :rocket:
 
-###Overview
+### Overview
 This software is a couple of python scripts that should (with the right files) extract longitude
 and latitude from the said file. Then after some sorting of the relevant data feed it into
 a google maps api and plot all the waypoints from a certain sequence (flighing session) as well as 
 relevant meta data.
 
-####Supported Drones
+#### Supported Drones
 * DJI Phantom 2 (Ground station app sqlite database file)
 * DJI Phantom 3 (CSV file from DatCon output)
 * Parrot Bebop 2 (PUD file from either mobile device used for flight or drone itself)
 
-=======
+---
 
-###Installation
+### Installation
 Once you have a copy of this directory then you'll want to do the following in your terminal.
 
 `cd [your/directory/Waypointer]`
@@ -27,10 +27,10 @@ You'll then need to input your password for your system.
 
 If prompted accept you want to download relevant software by tpying `y` and hitting enter/return.
 
-=======
+---
 
-###Usage
-####Parameters
+### Usage
+#### Parameters
 Be within the Waypointer folder.
 
 `python waypointer.pyc [sequence number] [sqlite database file]` for 'GroundStation' app.
@@ -40,16 +40,16 @@ Be within the Waypointer folder.
 This all gets a lot simpler if you copy the file into the 'Waypointer' folder, wherever that may be on 
 your system. Failing that you can just type the full address of where it is such as `~/Downloads/.../database.sqlite`
 
-####Result
+#### Result
 The result of this should be that you get a .html file by the name of sequence[value you chose].html, or [pud filename].html. Within the
 Waypointer folder. The file will also be automatically opened but it is saved within Waypointer should you want to open
 it at a later date, send it to someone else or whatever your heart desires. You can always generate the original again.
 
 Finally, meta data should be have also been gained from the files used and then displayed on the right hand side of the web page.
 
-=======
+---
 
-###Side note
+### Side note
 * It's worth noting that the source code should be in the folder should you want to edit it and hopefully commented thourougly 
 enough for your needs.
 * 'simplemap' is not my creation, credit goes to user 'patrick--' on github, it uses the MIT license.
@@ -62,4 +62,4 @@ on [Googles developer site.](https://developers.google.com/maps/documentation/ja
 * Sometimes in the terminal it seems to 'hang' when the .html file has been opened. Feel free to `Ctrl+C` in the terminal, it's just
 an idiosyncrasy of the python module `webbrowser` as far as I can tell.
 
-=======
+---
