@@ -45,7 +45,7 @@ The result of this should be that you get a .html file by the name of sequence[v
 Waypointer folder. The file will also be automatically opened but it is saved within Waypointer should you want to open
 it at a later date, send it to someone else or whatever your heart desires. You can always generate the original again.
 
-Finally, meta data should be have also been gained from the files used and then displayed on the right hand side of the web page.
+Finally meta data should be have also been gained from the files used and then displayed on the right hand side of the web page.
 
 ---
 
